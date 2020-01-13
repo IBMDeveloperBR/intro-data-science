@@ -1,0 +1,10 @@
+{
+  "short_name": "WML",
+  "name": "Watson Machine Learning Sample",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#181818"
+}
