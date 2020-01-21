@@ -9,7 +9,7 @@ app.use(helmet());
 app.use(express.json());
 
 // Renderizar pasta build
-app.use(express.static(path.join(__dirname, "/build")));
+app.use(express.static(path.join(__dirname, "../build")));
 
 // Rotas
 app.use(routes);
