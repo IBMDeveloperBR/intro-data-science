@@ -1,5 +1,6 @@
-# Introdução a Data Science com IBM Cloud
-## Predição de número de habitantes com base em GVA's de uma cidade
+# Introdução a Data Science com IBM Cloud - Predição de número de habitantes com base em GVA's de uma cidade
+
+## Rodando o app localmente
 
 Para rodar o app localmente, clone o git, insira suas credenciais do Watson Machine Learning no arquivo `env.sample` e execute os seguintes comandos:
 ```
@@ -8,6 +9,15 @@ npm i --only=prod
 npm start
 ```
 
-Acesse no seu navegador o endereço http://localhost:7000.
+Acesse o app no seu navegador, pelo endereço http://localhost:7000.
 
-(deploy button)
+## Rodando o app na nuvem
+
+Apenas clique no botão abaixo, configure suas credenciais, confirme e aguarde em torno de 5 minutos para que o deploy finalize. 
+
+<div align="center">
+<p><b>Deploy</b></p>
+<a href="https://cloud.ibm.com/devops/setup/deploy?repository=https://github.com/IBMDeveloperBR/intro-data-science" target="_blank">
+<img src="https://cloud.ibm.com/devops/setup/deploy/button.png" />
+</a>
+</div>

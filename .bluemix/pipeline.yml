@@ -1,0 +1,75 @@
+---
+stages:
+- name: Build
+  inputs:
+  - type: git
+    branch: master
+    service: ${REPO}
+  jobs:
+  - name: Build
+    type: builder
+    script: |
+      #!/bin/bash
+      export PATH=/opt/IBM/node-v6.7.0/bin:$PATH
+      npm install
+- name: Deploy
+  inputs:
+  - type: job
+    stage: Build
+    job: Build
+  triggers:
+  - type: stage
+  properties:
+  - name: CF_APP_NAME
+    value: undefined
+    type: text
+  - name: APP_URL
+    value: undefined
+    type: text
+  - name: WML_APIKEY
+    value: ${WML_APIKEY}
+    type: text
+  - name: WML_URL
+    value: ${WML_URL}
+    type: text
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${CF_REGION_ID}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+      api_key: ${API_KEY}
+    script: |
+      #!/bin/bash
+      # Push app
+      if ! cf app $CF_APP; then  
+        cf push $CF_APP --no-start -m 256M
+        cf set-env $CF_APP WML_APIKEY ${WML_APIKEY}
+        cf set-env $CF_APP WML_URL ${WML_URL}
+        cf start $CF_APP
+      else
+        OLD_CF_APP=${CF_APP}-OLD-$(date +"%s")
+        rollback() {
+          set +e  
+          if cf app $OLD_CF_APP; then
+            cf logs $CF_APP --recent
+            cf delete $CF_APP -f
+            cf rename $OLD_CF_APP $CF_APP
+          fi
+          exit 1
+        }
+        set -e
+        trap rollback ERR
+        cf rename $CF_APP $OLD_CF_APP
+        cf push $CF_APP --no-start -m 256M
+        cf set-env $CF_APP WML_APIKEY ${WML_APIKEY}
+        cf set-env $CF_APP WML_URL ${WML_URL}
+        cf start $CF_APP
+        cf delete $OLD_CF_APP -f
+      fi
+      #Print the dev test variabel
+      # Export app name and URL for use in later Pipeline jobs
+      export CF_APP_NAME="$CF_APP"
+      export APP_URL=http://$(cf app $CF_APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
