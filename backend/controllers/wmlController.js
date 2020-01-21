@@ -7,8 +7,8 @@ const apiPredict = (model, payload) => {
         request.post(model.url, {
             method: 'POST',
             body: {
-                fields: ["salario", "gasto_mensal", "filhos", "escolaridade"],
-                values: [payload]
+                fields: ["GVA_PUBLIC", "GVA_INDUSTRY", "GVA_SERVICES"],
+                values: [[payload.gvap, payload.gvai, payload.gvas]]
             },
             json: true,
             headers: {
@@ -69,7 +69,7 @@ const setCredentials = async (credentials) => {
             };
 
             // Chamada teste para o modelo
-            const mockPayload = [5000, 3000, 2, "Superior Completo"];
+            const mockPayload = { gvap: 200000, gvai: 1000000, gvas: 500000 };
             const result = await apiPredict(wml, mockPayload);
             if (result.err === true) {
                 resolve(result);
@@ -119,7 +119,7 @@ module.exports = {
                 msg: "As credenciais do modelo estão inválidas. Por favor, altere-as clicando no botão de configuração."
             });
         } else {
-            const result = await apiPredict(model, req.body.values);
+            const result = await apiPredict(model, req.body);
             if (result.err === true) {
                 return res.json({
                     err: true,
@@ -133,7 +133,7 @@ module.exports = {
             } else {
                 return res.json({
                     err: false,
-                    msg: "Predição: " + result.prediction[0][0]
+                    value: parseInt(result.prediction[0][0])
                 });
             };
         };
