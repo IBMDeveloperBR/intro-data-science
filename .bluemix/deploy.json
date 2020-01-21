@@ -12,7 +12,10 @@
     "type": "object",
     "properties": {
         "pipeline_name": {
-            "type": "string"
+            "type": "string",
+            "description": {
+                "$ref": "#/messages/deploy.pipelineNameDescription"
+            }
         },
         "dev-region": {
             "description": {
@@ -73,14 +76,23 @@
         }
     },
     "required": [
+        "pipeline_name",
         "dev-region",
         "dev-organization",
         "dev-space",
         "api-key",
-        "wml-api-key",
+        "wml-apikey",
         "wml-url"
     ],
     "form": [
+        {
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.form.pipeline_name"
+            },
+            "key": "pipeline_name"
+        },
         {
             "type": "validator",
             "url": "/devops/validator/validator-v1.html"
@@ -105,14 +117,6 @@
             "type": "select",
             "key": "dev-space",
             "readonly": false
-        },
-        {
-            "type": "text",
-            "readonly": true,
-            "title": {
-                "$ref": "#/messages/deploy.form.description"
-            },
-            "key": "pipeline_name"
         },
         {
             "type": "text",

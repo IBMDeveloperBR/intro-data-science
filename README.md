@@ -16,8 +16,9 @@ Acesse o app no seu navegador, pelo endereço http://localhost:7000.
 Apenas clique no botão abaixo, configure suas credenciais, confirme e aguarde em torno de 5 minutos para que o deploy finalize. 
 
 <div align="center">
-<p><b>Deploy</b></p>
 <a href="https://cloud.ibm.com/devops/setup/deploy?repository=https://github.com/IBMDeveloperBR/intro-data-science" target="_blank">
 <img src="https://cloud.ibm.com/devops/setup/deploy/button.png" />
 </a>
 </div>
+
+Para acompanhar o processo de deploy, clique em `Delivery Pipeline` e aguarde a passagem dos estágios `Build` e `Deploy`. Após ambos estarem finalizados, acesse o app clicando em `Ver console` e depois em `Visitar URL do App`.
