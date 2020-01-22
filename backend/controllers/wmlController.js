@@ -38,7 +38,7 @@ const setCredentials = async (credentials) => {
         if (!credentials.apikey || !credentials.url) {
             resolve({
                 err: true,
-                msg: "Credenciais faltando. Por favor, preencha os três campos."
+                msg: "Credenciais faltando. Por favor, preencha os dois campos."
             });
         };
         const IBM_Cloud_IAM_uid = "bx";
@@ -53,6 +53,8 @@ const setCredentials = async (credentials) => {
         };
 
         // Garantir um token de acesso da IBM Cloud REST API
+        // Armazenar o tempo que o token foi requisitado para saber quando estará expirado
+        const tokenRequestTime = Date.now();
         request.post(options, async (error, _, body) => {
             const iam_token = JSON.parse(body)["access_token"];
             if (error) {
@@ -65,7 +67,9 @@ const setCredentials = async (credentials) => {
             const wml = {
                 err: false,
                 url: credentials.url,
-                token: iam_token
+                apikey: credentials.apikey,
+                token: iam_token,
+                time: tokenRequestTime
             };
 
             // Chamada teste para o modelo
@@ -119,6 +123,10 @@ module.exports = {
                 msg: "As credenciais do modelo estão inválidas. Por favor, altere-as clicando no botão de configuração."
             });
         } else {
+            // Garantir outro token se tiverem passados 29 minutos (expira em 30).
+            if (Date.now() > model.time + 1740000) {
+                model = await setCredentials(model);
+            };
             const result = await apiPredict(model, req.body);
             if (result.err === true) {
                 return res.json({
