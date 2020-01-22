@@ -1,0 +1,46 @@
+.App {
+  text-align: center;
+}
+
+.screen {
+  height: 100vh;
+  width: 100vw;
+  padding: 48px 32px 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen h1 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 22px;
+  margin-bottom: 22px;
+}
+
+.container {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  background-color: #161616;
+}
+
+@media only screen and (min-width: 600px) {
+  .screen h1 {
+    font-size: 32px;
+    line-height: 38px;
+    margin-bottom: 88px;
+  }
+  .container {
+    height: 75%;
+    width: 75%;
+    max-width: 720px;
+    max-height: 520px;
+  }
+}
